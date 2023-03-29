@@ -1,0 +1,3 @@
+#!/bin/sh
+basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+protoc --plugin "tsproto-gen" "$basedir/../src/protocols/*.proto" -I "$basedir/../src/protocols/"  --ts_proto_out "$basedir/../src/generated"
