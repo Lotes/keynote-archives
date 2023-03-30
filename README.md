@@ -25,3 +25,7 @@ Transpile to Javascript...
 ```
 npm run build
 ```
+
+## License
+
+[MIT license](LICENSE)
