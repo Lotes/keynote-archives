@@ -10,9 +10,7 @@
   "author": "Markus Rudolph",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^5.0.2"
-  },
-  "dependencies": {
+    "typescript": "^5.0.2",
     "@protobuf-ts/plugin": "^2.8.3"
-  }
+  }       
 }
