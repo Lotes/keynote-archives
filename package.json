@@ -7,6 +7,10 @@
     "generate-ts-from-proto": "mkdir -p src/generated && npx protoc --ts_out src/generated --proto_path src/protocols/ src/protocols/*.proto",
     "build": "tsc -b"
   },
+  "files": [
+    "lib",
+    "src"
+  ],
   "author": "Markus Rudolph",
   "license": "MIT",
   "devDependencies": {
