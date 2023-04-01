@@ -1,13 +1,13 @@
 {
   "name": "keynote-archives",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Contains Keynote Archive serializers and deserializers",
   "main": "lib/generated/index.js",
   "scripts": {
-    "clean": "shx rm -rf lib",
+    "clean": "shx rm -rf lib *.tsbuildinfo",
     "generate-ts-from-proto": "mkdir -p src/generated && npx protoc --ts_out src/generated --proto_path src/protocols/ src/protocols/*.proto",
     "generate-index-from-ts": "ts-node src/index.generator.ts",
-    "build": "tsc src/generated/*.ts"
+    "build": "tsc -b"
   },
   "files": [
     "lib/generated"
@@ -18,6 +18,7 @@
     "@protobuf-ts/plugin": "^2.8.3",
     "@types/node": "^18.15.11",
     "langium": "^1.1.0",
+    "shx": "^0.3.4",
     "ts-node": "^10.9.1",
     "tslib": "^2.5.0",
     "typescript": "^5.0.2"
