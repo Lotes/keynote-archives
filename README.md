@@ -20,6 +20,12 @@ Generate Typescript files from Protobuf files...
 npm run generate-ts-from-proto
 ```
 
+Create the index...
+
+```
+npm run generate-index-from-ts
+```
+
 Transpile to Javascript...
 
 ```
