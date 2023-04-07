@@ -63,7 +63,7 @@ export async function generateIndex() {
   const generatorNode = new CompositeGeneratorNode();
   const imports = new Map<string, [number, string][]>();
   for (const [code, {prefix, datatype}] of codes) {
-    if(prefix === 'module') {
+    if(prefix === 'package') {
       continue;
     }
     if(allTypes.has(prefix)) {
@@ -87,8 +87,18 @@ export async function generateIndex() {
     }
   }
 
-  for (const [name] of imports) {
-    generatorNode.append(`import * as ${name} from './${name}';`, NL);
+  generatorNode.append(`export * from '../utils';`, NL);
+  for (const [_, list] of allTypes) {
+    for (const {name} of list) {
+      generatorNode.append(`export * as ${name} from './${name}';`, NL);
+    }
+  }
+  generatorNode.append(NL);
+  
+  for (const [_, list] of allTypes) {
+    for (const {name} of list) {
+      generatorNode.append(`import * as ${name} from './${name}';`, NL);
+    }
   }
 
   generatorNode.append(`import { MessageType } from '@protobuf-ts/runtime';`, NL, NL);
@@ -116,7 +126,24 @@ export async function generateIndex() {
   for (const [_, line] of lines) {
     generatorNode.append(line, NL);
   }
-  generatorNode.append(`};`, NL);
+  generatorNode.append(`};`, NL, NL);
+
+  for (const [_, list] of allTypes) {
+    for (const {name, types} of list) {
+      generatorNode.append(`export const ${name}$Archives: MessageType<object>[] = [`, NL);
+      for (const type of types) {
+        generatorNode.append(`  ${name}.${type},`, NL);
+      }
+      generatorNode.append(`];`, NL);
+    }
+  }
+  generatorNode.append(NL, `export const AllArchives = [`, NL);
+  for (const [_, list] of allTypes) {
+    for (const {name} of list) {
+      generatorNode.append(`  ...${name}$Archives,`, NL);
+    }
+  }
+  generatorNode.append(`];`, NL);
 
   await writeFile(resolve(__dirname, 'generated/index.ts'), toString(generatorNode));
 }
