@@ -63,7 +63,7 @@ export async function generateIndex() {
   const generatorNode = new CompositeGeneratorNode();
   const imports = new Map<string, [number, string][]>();
   for (const [code, {prefix, datatype}] of codes) {
-    if(prefix === 'module') {
+    if(prefix === 'package') {
       continue;
     }
     if(allTypes.has(prefix)) {

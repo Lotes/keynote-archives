@@ -1,4 +1,4 @@
-code;module;datatype
+code;package;datatype
 1;KN;DocumentArchive
 2;KN;ShowArchive
 3;KN;UIStateArchive
