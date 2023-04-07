@@ -14,6 +14,10 @@ export interface File extends ArchiveEntryBase {
 
 export interface IwaArchive extends ArchiveEntryBase {
   type: 'iwa';
+  chunks: IwaChunk[];
+}
+
+export interface IwaChunk {
   objects: IwaObject[];
 }
 
@@ -22,20 +26,23 @@ export type ArchiveEntry = File | IwaArchive;
 export async function* decode(data: Uint8Array): AsyncIterableIterator<ArchiveEntry> {
   for await(const entry of unzip(data)) {
     if(isIwaFile(entry.name)) {
+      const chunks: IwaChunk[] = [];
       for await(const chunk of unchunk(entry.data)) {
+        const objects: IwaObject[] = [];
         for await(const message of splitObjects(chunk)) {
-          yield {
-            type: 'iwa',
-            name: entry.name,
-            objects: [message],
-          };
+          objects.push(message);
         }
+        chunks.push({ objects });
       }
+      yield {
+        type: 'iwa',
+        name: entry.name,
+        chunks
+      };
     } else {
       yield {
         type: 'file',
-        name: entry.name,
-        data: entry.data
+        ...entry
       };
     }
   }
