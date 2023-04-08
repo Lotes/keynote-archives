@@ -2,7 +2,7 @@
   "name": "keynote-archives",
   "version": "1.0.2",
   "description": "Contains Keynote Archive serializers and deserializers",
-  "main": "lib/generated/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "clean": "shx rm -rf lib *.tsbuildinfo",
     "generate-ts-from-proto": "mkdir -p src/generated && npx protoc --ts_out src/generated --proto_path src/protocols/ src/protocols/*.proto",
