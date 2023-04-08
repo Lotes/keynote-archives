@@ -10,7 +10,7 @@
     "build": "tsc -b"
   },
   "files": [
-    "lib/generated"
+    "lib"
   ],
   "author": "Markus Rudolph",
   "license": "MIT",
