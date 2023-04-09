@@ -14,7 +14,7 @@ export class Uint8ArrayReader {
   }
 
   private assertBounds(length: number) {
-    if (this.pos + length > this.buf.length) {
+    if (this.pos < this.start || this.pos + length > this.buf.length) {
       throw new Error('Reading operation will lead to out of bounds.');
     }
   }
