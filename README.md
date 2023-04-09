@@ -14,14 +14,15 @@ npm install keynote-archives
 Then import the package and unzip the inner files, unchunk the single IWA files and split each chunk into objects.
 
 ```ts
-import { isIwaFile, unzip, unchunk, splitObjects, serialize } from 'keynote-archives';
+import { unzip, isIwaFile, dechunk, uncompress, splitObjects, asJson } from 'keynote-archives';
 
 export async function decode(data: Uint8Array): void {
   for await(const entry of unzip(data)) {
     if(isIwaFile(entry.name)) {
-      for await(const chunk of unchunk(entry.data)) {
+      for await(const snappyChunk of dechunk(entry.data)) {
+        const chunk = await uncompress(snappyChunk);
         for await(const message of splitObjects(chunk)) {
-          console.log(serialize(message));
+          console.log(asJson(message));
         }
       }
     }
@@ -33,9 +34,10 @@ export async function decode(data: Uint8Array): void {
 
 This package provides asynchronous functions to read IWA format:
 
-1. `unzip`: opens an Uint8 array as Zip file and returns multiple file entries, until EOF.
-2. `unchunk`: opens an Uint8 array as IWA file and returns multiple [Snappy](https://www.npmjs.com/package/snappy) uncompressed chunks as Uint8 array, until EOF.
-3. `splitObjects`: opens an Uint8 array as IWA file chunk and returns multiple Protobuf-decoded IWA (JSON) objects, until EOF or error.
+1. `unzip`: opens an `Uint8Array` as Zip file and returns multiple file entries, until `EOF`.
+2. `dechunk`: opens an `Uint8Array` as IWA file and returns multiple [Snappy](https://www.npmjs.com/package/snappy)-compressed chunks as `Uint8Array`, until `EOF`.
+3. `uncompress`: opens an `Uint8Array` as Snappy chunk and returns uncompressed data as `Uint8Array`.
+3. `splitObjects`: opens an Uint8 array as IWA file chunk and returns multiple Protobuf-decoded IWA (JSON) objects, until `EOF` or error.
 4. `decode`: (everything at once) opens an Uint8 array as Zip file and returns multiple `ArchiveEntry`s containing either a file or a list of IWA chunks with multiple IWA objects associated with an IWA file.
 
 You will also get access to all archives types:
