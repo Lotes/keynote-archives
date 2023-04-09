@@ -1,5 +1,5 @@
 import { MessageType } from "@protobuf-ts/runtime";
-import { ArchiveInfo } from "../generated/TSPArchiveMessages";
+import { ArchiveInfo, MessageInfo } from "../generated/TSPArchiveMessages";
 import { Uint8ArrayReader } from "./reader";
 
 export interface Registry {
@@ -15,7 +15,7 @@ export interface IwaObject {
 }
 
 export interface IwaMessage {
-  type: number;
+  info: MessageInfo;
   offset: number;
   length: number;
   data: unknown;
@@ -42,9 +42,9 @@ export async function* splitObjectsAs(chunk: Uint8Array, registry: Registry): As
         const messagePayload = reader.readBytes(messageInfo.length).slice();
         const message = messageType.fromBinary(messagePayload);
         messages.push({
+          info: messageInfo,
           offset,
           length: reader.pos - offset,
-          type: messageInfo.type,
           data: message
         });
       } catch (e) {
