@@ -1,42 +1,65 @@
-import { KeynoteArchives } from "../generated";
+import { MessageType } from "@protobuf-ts/runtime";
 import { ArchiveInfo } from "../generated/TSPArchiveMessages";
 import { Uint8ArrayReader } from "./reader";
 
+export interface Registry {
+  [index: number]: MessageType<object>;
+}
+
 export interface IwaObject {
-  id: bigint;
+  identifier?: bigint;
+  shouldMerge?: boolean;
+  offset: number;
+  length: number;
   messages: IwaMessage[];
 }
 
 export interface IwaMessage {
-  type: keyof typeof KeynoteArchives;
+  type: number;
+  offset: number;
+  length: number;
   data: unknown;
 }
 
-export async function* splitObjects(chunk: Uint8Array): AsyncIterableIterator<IwaObject> {
+export async function* splitObjectsAs(chunk: Uint8Array, registry: Registry): AsyncIterableIterator<IwaObject> {
   const reader = new Uint8ArrayReader(chunk);
   while(!reader.eof()) {
+    const offset = reader.pos;
     let archiveInfo: ArchiveInfo;
     try {
-      const archiveInfoLength = reader.readVarint32();
-      archiveInfo = ArchiveInfo.fromBinary(reader.readBytes(archiveInfoLength).slice());
+      const length = reader.readVarint32();
+      const buffer = reader.readBytes(length).slice();
+      archiveInfo = ArchiveInfo.fromBinary(buffer);
     } catch (e) {
       console.error('Error while parsing archive info! ', e);
       return
     }
-    const object: IwaObject = {
-      id: archiveInfo.identifier ?? -1n,
-      messages: []
-    };
+    const messages: IwaMessage[] = [];
     for (const [index, messageInfo] of Object.entries(archiveInfo.messageInfos)) {
       try {
-        const messageType = KeynoteArchives[messageInfo.type as keyof typeof KeynoteArchives];
+        const offset = reader.pos;
+        const messageType = registry[messageInfo.type];
         const messagePayload = reader.readBytes(messageInfo.length).slice();
         const message = messageType.fromBinary(messagePayload);
-        object.messages.push({type: messageInfo.type as keyof typeof  KeynoteArchives, data: message});
+        messages.push({
+          offset,
+          length: reader.pos - offset,
+          type: messageInfo.type,
+          data: message
+        });
       } catch (e) {
         console.error('Error while parsing message! ', index, e);
       }
     }
+    const length = reader.pos - offset;
+    const object: IwaObject = {
+      identifier: archiveInfo.identifier,
+      shouldMerge: archiveInfo.shouldMerge,
+      offset,
+      length,
+      messages
+    };
+
     yield object;
   }
 }
