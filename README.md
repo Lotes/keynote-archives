@@ -14,7 +14,7 @@ npm install keynote-archives
 Then import the package and unzip the inner files, unchunk the single IWA files and split each chunk into objects.
 
 ```ts
-import { unzip, isIwaFile, dechunk, uncompress, splitObjects, asJson, KeynoteArchives } from 'keynote-archives';
+import { unzip, isIwaFile, dechunk, uncompress, splitObjectsAs, KeynoteArchives } from 'keynote-archives';
 
 export async function decode(data: Uint8Array): void {
   for await(const entry of unzip(data)) {
