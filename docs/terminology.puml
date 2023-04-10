@@ -1,0 +1,21 @@
+@startuml terminology
+!theme vibrant
+file Keynote as ".key"
+file File
+file OtherFile
+file IWAFile as ".iwa"
+file Chunk
+file SnappyChunk
+Keynote "1" *-- "*" File
+File <|-- OtherFile
+File <|-- IWAFile
+IWAFile "1"  *-- "*" SnappyChunk
+file Chunk
+file ProtobufObject
+SnappyChunk "1" --  "1" Chunk
+Chunk "1" *-- "*" ProtobufObject
+Keynote ..> File : unzip
+IWAFile ..> SnappyChunk : dechunk
+SnappyChunk ..> Chunk : uncompress
+Chunk ..> ProtobufObject: splitObjects
+@enduml
