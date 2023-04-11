@@ -28,6 +28,7 @@ jobs:
         with:
           static_site_generator: next
       - name: Install dependencies
+        working-directory: ./gh-pages
         run: npm ci
       - name: Build
         working-directory: ./gh-pages
