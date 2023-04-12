@@ -15,7 +15,7 @@ export function ProgressBar({ label, maximum, value }: ProgressBarProps) {
           style={{ width: (100*value/maximum)+"%" }}
         ></div>
       </div>
-      <div className="text-center">{label}</div>
+      <div className="text-center mb-4">{label}</div>
     </>
   );
 }
