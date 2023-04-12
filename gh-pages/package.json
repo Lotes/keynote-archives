@@ -20,6 +20,7 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "tailwindcss": "3.3.1",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "keynote-archives": ".."
   }
 }
