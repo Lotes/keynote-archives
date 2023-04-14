@@ -1,6 +1,6 @@
 {
   "name": "keynote-archives",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Contains Keynote Archive serializers and deserializers",
   "main": "lib/index.js",
   "scripts": {
