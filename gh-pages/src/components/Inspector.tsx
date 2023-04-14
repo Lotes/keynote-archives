@@ -5,9 +5,10 @@ import { Fragment, Reducer, useEffect, useReducer, useState } from "react";
 import { FileFrame } from "./FileFrame";
 import { reducer } from "./statemachine/reducer";
 import { Action } from "./statemachine/actions";
-import { FileState, initialState, InspectorState } from "./statemachine/states";
+import { initialState, InspectorState } from "./statemachine/states";
 import _ from "lodash";
 import { FileTypeCategory, SearchBar } from "./SearchBar";
+import { IWorkArchiveInspector } from "./iWorkArchiveInspector";
 
 export interface InspectorProps {
   name: string;
@@ -69,7 +70,10 @@ export function Inspector({ name, url, onUnload }: InspectorProps) {
             {path}
           </h2>
           {files.filter(f => category === 'all' || f.type === category).map((f) => (
-            <FileFrame key={f.path} file={f.path} />
+            <FileFrame key={f.path} file={f.path}>
+              {f.type === "image" && <img className="m-auto max-h-fit" src={f.url} />}
+              {f.type === 'iwa' && <IWorkArchiveInspector file={f}/>}
+            </FileFrame>
           ))}
         </Fragment>
       ))}
