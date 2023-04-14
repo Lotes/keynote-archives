@@ -6,9 +6,11 @@ export interface InspectorState {
   files: FileState[];
 }
 
+export type FileType = 'xml' | 'iwa' | 'image' | 'other';
+
 export interface FileStateBase {
   path: string;
-  type: 'xml'|'iwa'|'image'|'other';
+  type: FileType;
   status: UnpackStatus;
 }
 
