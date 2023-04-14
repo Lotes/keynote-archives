@@ -1,36 +1,30 @@
 import { DropZone } from "@/components/DropZone";
 import { useEffect, useState } from "react";
+import Head from "next/head";
+import { Inspector } from "@/components/Inspector";
 
 export default function Home() {
-  const [name, setName] = useState<string|undefined>();
-  const [url, setUrl] = useState<string|undefined>();
-
-  useEffect(() => {
-    setUrl(localStorage.getItem("url") ?? undefined);
-    setName(localStorage.getItem("name") ?? undefined);
-  }, []);
-
-  useEffect(() => {
-    url && localStorage.setItem("url", url);
-    name && localStorage.setItem("name", name);
-  }, [url]);
+  const [name, setName] = useState<string | undefined>();
+  const [url, setUrl] = useState<string | undefined>();
 
   return (
-    url
-      ? 
-      <main className="flex min-h-screen flex-col items-center justify-start p-24">
-        {name}
-        <button onClick={() => {
-          localStorage.setItem('name', undefined!);
-          localStorage.setItem('url', undefined!);
+    <>
+      <Head>
+        <title>{name ?? "Keynote inspector"}</title>
+      </Head>
+      {url && name ? (
+        <Inspector name={name} url={url} onUnload={() => {
           setName(undefined);
           setUrl(undefined);
-        }}>Unload</button> 
-      </main>
-      :
-      <DropZone onDrop={async (file) => {
-        setUrl(URL.createObjectURL(new Blob([await file.arrayBuffer()])));
-        setName(file.name);
-      }} />
-  )
+        }}/>
+      ) : (
+        <DropZone
+          onDrop={async (file) => {
+            setUrl(URL.createObjectURL(new Blob([await file.arrayBuffer()])));
+            setName(file.name);
+          }}
+        />
+      )}
+    </>
+  );
 }

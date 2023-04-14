@@ -7,13 +7,16 @@ export interface DropZoneProps {
 }
 
 export function DropZone({onDrop: outerOnDrop}: DropZoneProps) {
-  const onDrop = useCallback((files: File[]) => outerOnDrop(files[0]), [])
-  const {getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject} = useDropzone({
-    onDrop, 
-    accept: {
-      'application/keynote': [".key"],
-      'application/vnd.apple.keynote': [".key"],
-    },
+  const onDrop = useCallback((files: File[]) => {
+    const file = files[0];
+    if(file.name.endsWith(".key")){
+      outerOnDrop(file);
+    } else {
+      alert("Please drop a Keynote file (.key)!");
+    }
+  }, [])
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject} = useDropzone({
+    onDrop,
     multiple: false
   })
 
