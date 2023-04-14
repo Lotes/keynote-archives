@@ -28,6 +28,6 @@
   "dependencies": {
     "@protobuf-ts/runtime": "^2.8.3",
     "jszip": "^3.10.1",
-    "snappy": "^7.2.2"
+    "snappyjs": "^0.7.0"
   }
 }
