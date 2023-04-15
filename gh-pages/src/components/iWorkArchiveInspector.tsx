@@ -13,6 +13,7 @@ export function IWorkArchiveInspector({ file, onToggle }: IWorkArchiveInspectorP
 
   return (
     <>
+      {!file.open && <button onClick={onToggle}>Open</button>}
       {file.open && chunks
         .map((c, index) => (
           <Fragment key={index}>
@@ -32,7 +33,6 @@ export function IWorkArchiveInspector({ file, onToggle }: IWorkArchiveInspectorP
         .reduce((a, b) => (
           <Fragment>{[a, <hr className="my-2" />, b]}</Fragment>
         ))}
-      {!file.open && <button onClick={onToggle}>Open</button>}
     </>
   );
 }
