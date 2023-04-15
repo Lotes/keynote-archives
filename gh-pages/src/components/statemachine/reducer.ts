@@ -37,7 +37,8 @@ export function reducer(state: InspectorState, action: Action): InspectorState {
             ...fileCommon,
             type: 'iwa',
             chunks: [],
-            buffer: action.data
+            buffer: action.data,
+            open: false
           };
           break;
         default:
@@ -59,7 +60,8 @@ export function reducer(state: InspectorState, action: Action): InspectorState {
       const iwaFile = state.files.find(f => f.path === action.path);
       if (iwaFile && iwaFile.type === 'iwa') {
         const chunk: ChunkState = {
-          startAddress: action.startAddress
+          startAddress: action.startAddress,
+          data: action.data
         };
         return {
           ...state,
@@ -72,6 +74,23 @@ export function reducer(state: InspectorState, action: Action): InspectorState {
                 chunk
               ]
             }
+          ]
+        };
+      }
+      return state;
+    case "toggle-file":
+      const fileToToggleIndex = state.files.findIndex(f => f.path === action.path);
+      const fileToToggle = state.files[fileToToggleIndex];
+      if (fileToToggle && fileToToggle.type === 'iwa') {
+        return {
+          ...state,
+          files: [
+            ...state.files.slice(0, fileToToggleIndex),
+            {
+              ...fileToToggle,
+              open: !fileToToggle.open
+            },
+            ...state.files.slice(fileToToggleIndex + 1)
           ]
         };
       }
