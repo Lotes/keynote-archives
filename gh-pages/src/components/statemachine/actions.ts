@@ -1,4 +1,4 @@
-export type ActionType = 'add-file'|'add-chunk';
+export type ActionType = 'add-file'|'add-chunk'|'toggle-file';
 
 export interface ActionBase {
   type: ActionType;
@@ -17,4 +17,9 @@ export interface AddChunkAction extends ActionBase {
   data: Uint8Array;
 }
 
-export type Action = AddFileAction | AddChunkAction;
+export interface ToggleFileAction extends ActionBase {
+  type: 'toggle-file';
+  path: string;
+}
+
+export type Action = AddFileAction | AddChunkAction | ToggleFileAction;

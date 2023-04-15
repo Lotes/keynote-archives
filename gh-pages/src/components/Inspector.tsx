@@ -88,7 +88,10 @@ export function Inspector({ name, url, onUnload }: InspectorProps) {
                   {f.type === "image" && (
                     <img className="m-auto max-h-fit" src={f.url} />
                   )}
-                  {f.type === "iwa" && <IWorkArchiveInspector file={f} />}
+                  {f.type === "iwa" && <IWorkArchiveInspector file={f} onToggle={() => dispatch({
+                    type: "toggle-file",
+                    path: f.path,
+                  })} />}
                 </FileFrame>
               ))}
           </Fragment>

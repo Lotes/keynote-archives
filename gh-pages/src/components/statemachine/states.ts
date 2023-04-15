@@ -16,12 +16,14 @@ export interface FileStateBase {
 
 export interface IwaFileState extends FileStateBase {
   type: 'iwa';
+  open: boolean;
   chunks: ChunkState[];
   buffer: Uint8Array
 }
 
 export interface ChunkState {
   startAddress: number;
+  data: Uint8Array;
 }
 
 export interface XmlFileState extends FileStateBase {
