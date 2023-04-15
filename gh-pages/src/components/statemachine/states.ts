@@ -17,10 +17,11 @@ export interface FileStateBase {
 export interface IwaFileState extends FileStateBase {
   type: 'iwa';
   chunks: ChunkState[];
+  buffer: Uint8Array
 }
 
 export interface ChunkState {
-  
+  startAddress: number;
 }
 
 export interface XmlFileState extends FileStateBase {
@@ -35,7 +36,7 @@ export interface ImageFileState extends FileStateBase {
 
 export interface OtherFileState extends FileStateBase {
   type: 'other';
-  buffer: ArrayBuffer;
+  buffer: Uint8Array;
 }
 
 export type FileState = IwaFileState | XmlFileState | ImageFileState | OtherFileState;
