@@ -1,5 +1,5 @@
 import { Action } from "./actions";
-import { FileState, InspectorState } from "./states";
+import { ChunkState, FileState, InspectorState } from "./states";
 
 export function reducer(state: InspectorState, action: Action): InspectorState {
   switch (action.type) {
@@ -36,7 +36,8 @@ export function reducer(state: InspectorState, action: Action): InspectorState {
           file = {
             ...fileCommon,
             type: 'iwa',
-            chunks: []
+            chunks: [],
+            buffer: action.data
           };
           break;
         default:
@@ -54,6 +55,27 @@ export function reducer(state: InspectorState, action: Action): InspectorState {
           file
         ],
       };
+    case "add-chunk":
+      const iwaFile = state.files.find(f => f.path === action.path);
+      if (iwaFile && iwaFile.type === 'iwa') {
+        const chunk: ChunkState = {
+          startAddress: action.startAddress
+        };
+        return {
+          ...state,
+          files: [
+            ...state.files.filter(f => f.path !== action.path),
+            {
+              ...iwaFile,
+              chunks: [
+                ...iwaFile.chunks,
+                chunk
+              ]
+            }
+          ]
+        };
+      }
+      return state;
     default:
       return state;
   }
