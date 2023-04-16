@@ -11,7 +11,7 @@ export function Headline({ name, onUnload }: HeadlineProps) {
       <Image
         alt="icon"
         className="inline"
-        src="/keynote.png"
+        src="keynote.png"
         width="32"
         height="32"
       />
