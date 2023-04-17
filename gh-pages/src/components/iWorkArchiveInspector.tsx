@@ -16,7 +16,7 @@ export function IWorkArchiveInspector({ file, onToggle }: IWorkArchiveInspectorP
       {!file.open && <button onClick={onToggle}>Open</button>}
       {file.open && chunks
         .map((c, index) => (
-          <Fragment key={index}>
+          <Fragment key={c.startAddress}>
             <div className="font-mono text-xs">
               Chunk {index + 1} @ 0x{c.startAddress.toString(16)}:
             </div>

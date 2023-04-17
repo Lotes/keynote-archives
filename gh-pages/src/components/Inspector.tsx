@@ -9,6 +9,7 @@ import { initialState, InspectorState } from "./statemachine/states";
 import _ from "lodash";
 import { FileTypeCategory, SearchBar } from "./SearchBar";
 import { IWorkArchiveInspector } from "./iWorkArchiveInspector";
+import { HexViewer } from "./HexViewer";
 
 export interface InspectorProps {
   name: string;
@@ -92,6 +93,9 @@ export function Inspector({ name, url, onUnload }: InspectorProps) {
                     type: "toggle-file",
                     path: f.path,
                   })} />}
+                  {f.type === "other" && (
+                    <HexViewer startAddress={0} data={f.buffer} regions={[]}/>
+                  )}
                 </FileFrame>
               ))}
           </Fragment>

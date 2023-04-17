@@ -24,14 +24,6 @@ export function reducer(state: InspectorState, action: Action): InspectorState {
             url: URL.createObjectURL(new Blob([action.data], { type: 'image/' + extention }))
           };
           break;
-        case 'plist':
-        case 'xml':
-          file = {
-            ...fileCommon,
-            type: 'xml',
-            content: new TextDecoder().decode(action.data)
-          };
-          break;
         case 'iwa':
           file = {
             ...fileCommon,

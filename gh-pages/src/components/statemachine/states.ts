@@ -6,7 +6,7 @@ export interface InspectorState {
   files: FileState[];
 }
 
-export type FileType = 'xml' | 'iwa' | 'image' | 'other';
+export type FileType = 'iwa' | 'image' | 'other';
 
 export interface FileStateBase {
   path: string;
@@ -26,11 +26,6 @@ export interface ChunkState {
   data: Uint8Array;
 }
 
-export interface XmlFileState extends FileStateBase {
-  type: 'xml';
-  content: string;
-}
-
 export interface ImageFileState extends FileStateBase {
   type: 'image';
   url: string;
@@ -41,7 +36,7 @@ export interface OtherFileState extends FileStateBase {
   buffer: Uint8Array;
 }
 
-export type FileState = IwaFileState | XmlFileState | ImageFileState | OtherFileState;
+export type FileState = IwaFileState | ImageFileState | OtherFileState;
 
 export function initialState(name: string, url: string): InspectorState {
   return {
